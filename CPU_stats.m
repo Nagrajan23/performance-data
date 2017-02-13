@@ -1,7 +1,21 @@
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 clc;
 clear;
 
 filename = 'CPU_Log.xlsx';
+SecondsToLog = 300; %1 Hour
 MaxRAM = 8192; %MBytes
 
 %https://www.experts-exchange.com/questions/26646616/C-get-current-CPU-usage-Memory-usage-Disk-usage.html
@@ -20,46 +34,15 @@ HddTransfers = System.Diagnostics.PerformanceCounter('PhysicalDisk','Disk Bytes/
 networkDownload = System.Diagnostics.PerformanceCounter('Network Interface','Bytes Received/sec','Intel[R] Dual Band Wireless-AC 3160');
 networkUpload = System.Diagnostics.PerformanceCounter('Network Interface','Bytes Sent/sec','Intel[R] Dual Band Wireless-AC 3160');
 
-excelData=cell(1,12);
 garbage1=UpTime.NextValue();
 garbage2=HddTransfers.NextValue();
 garbage3=networkDownload.NextValue();
 garbage4=networkUpload.NextValue();
 garbage5=cpu1.NextValue();
 
-for i=1:10
-    timestamp = char(datetime);
-%     disp(cpu1.NextValue());
-%     disp(temperature1.NextValue());
-%     disp(temperature2.NextValue());
-%     disp(UpTime.NextValue());
-%     disp(processes.NextValue());
-%     disp(threads.NextValue());
-%     disp(HddTransfers.NextValue());
-%     disp('*****************************************');
-    
-    UpTimeValue = UpTime.NextValue();
-
-    UpDays = floor(UpTimeValue/3600/24);
-    UpHours = floor((UpTimeValue/3600) - (UpDays*24));
-    UpMins = floor((UpTimeValue/3600 - UpDays*24-UpHours)*60);
-    UpSecs = floor(((UpTimeValue/3600 - UpDays*24-UpHours)*60-UpMins)*60);
-
-    excelData{1} = timestamp(1:11);
-    excelData{2} = timestamp(13:20);
-    excelData{3} = [num2str(UpDays) ':' num2str(UpHours) ':' num2str(UpMins) ':' num2str(UpSecs)];
-    excelData{4} = cpu1.NextValue();
-    excelData{5} = ram1.NextValue();
-    excelData{6} = processes.NextValue();
-    excelData{7} = threads.NextValue();
-    excelData{8} = HddTransfers.NextValue();
-    excelData{9} = networkDownload.NextValue();
-    excelData{10} = networkUpload.NextValue();
-    excelData{11} = temperature1.NextValue();
-    excelData{12} = temperature2.NextValue();
-    
-    xlsRange = ['A' num2str(i+1) ':L' num2str(i+1)];
-    
-    xlswrite(filename,excelData,xlsRange);
-    pause(1);
-end;
+t = timer('Period', 1, 'TasksToExecute', SecondsToLog, 'ExecutionMode', 'fixedRate');
+t.BusyMode = 'queue';
+t.TimerFcn = @(~,~)CollectData( cpu1, ram1, temperature1, temperature2,...
+        UpTime, processes, threads, HddTransfers, networkDownload,...
+        networkUpload, MaxRAM, filename, t.TasksExecuted  );
+start(t);
