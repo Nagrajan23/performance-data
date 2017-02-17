@@ -15,7 +15,7 @@ clc;
 clear;
 
 filename = 'CPU_Log.xlsx';
-SecondsToLog = 300; %1 Hour
+SecondsToLog = 3600; %1 Hour
 MaxRAM = 8192; %MBytes
 
 %https://www.experts-exchange.com/questions/26646616/C-get-current-CPU-usage-Memory-usage-Disk-usage.html
