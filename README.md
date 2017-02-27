@@ -1,4 +1,4 @@
-# CPU STATISTICS DATA AQUISITION, STUDY AND ANALYSIS
+# CPU Statistics Data Aquisition, Study and Analysis
 This project basically records all the parameters of a processor and writes it in a Excel file using a MATLAB code, which you can find in the 'code' folder.
 The data we collected stored in 'Logs' folder is under various circumstances like web surfing, live video streaming and idle condition.
 Data was collected in such way to analyse and compare the performance parameters in a systematic manner.
