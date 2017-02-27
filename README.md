@@ -8,4 +8,7 @@ The results we obtained are stored in 'graphs' folder in graphical format.
 
 <b> Few tips: </b>
 You can edit the number of readings and parameters you want by doing minor changes in the program.
-Before running this code in your MATLAB, you need to save the MATLAB codes and Excel file named 'CPU_stats' with the parameters specified in log files at the path --> C:\Users\Documents\MATLAB .  
+Before running this code in your MATLAB, you need to save the MATLAB codes and Excel file named 'CPU_stats' with the parameters specified in log files at the following path:
+
+
+C:\Users\Documents\MATLAB
