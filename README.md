@@ -6,7 +6,7 @@
 
 
 
-<b> Few tips: </b>
+<b> Few tips: </b> </br>
 1. Edit the number of readings and parameters by doing minor changes in the program. </br>
 2. Before running this code in MATLAB, save the MATLAB codes and Excel file named 'CPU_stats' with the parameters specified in log files at the following path:
 
